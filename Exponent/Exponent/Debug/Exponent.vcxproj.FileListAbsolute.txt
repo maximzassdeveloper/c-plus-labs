@@ -1,0 +1,3 @@
+D:\C++\Exponent\Exponent\Debug\Exponent.vcxproj.AssemblyReference.cache
+D:\C++\Exponent\Exponent\Debug\Exponent.MyForm.resources
+D:\C++\Exponent\Exponent\Debug\Exponent.vcxproj.GenerateResource.cache

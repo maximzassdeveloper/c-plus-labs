@@ -1,0 +1,3 @@
+D:\C++\First\First\Debug\First.vcxproj.AssemblyReference.cache
+D:\C++\First\First\Debug\First.MyForm.resources
+D:\C++\First\First\Debug\First.vcxproj.GenerateResource.cache

@@ -1,0 +1,3 @@
+D:\C++\ModernCalc\ModernCalc\Debug\ModernCalc.vcxproj.AssemblyReference.cache
+D:\C++\ModernCalc\ModernCalc\Debug\ModernCalc.MyForm.resources
+D:\C++\ModernCalc\ModernCalc\Debug\ModernCalc.vcxproj.GenerateResource.cache

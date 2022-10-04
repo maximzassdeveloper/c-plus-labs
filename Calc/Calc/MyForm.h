@@ -144,6 +144,7 @@ namespace Calc {
 			this->firstNum->TabIndex = 5;
 			this->firstNum->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->firstNum->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::firstNum_KeyPress);
+			this->firstNum->Leave += gcnew System::EventHandler(this, &MyForm::firstNum_Leave);
 			// 
 			// secondNum
 			// 
@@ -156,6 +157,7 @@ namespace Calc {
 			this->secondNum->TabIndex = 6;
 			this->secondNum->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->secondNum->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::secondNum_KeyPress);
+			this->secondNum->Leave += gcnew System::EventHandler(this, &MyForm::secondNum_Leave);
 			// 
 			// result
 			// 
@@ -258,10 +260,10 @@ namespace Calc {
 #pragma endregion
 	
 	// Helper functions
-	private: void validationMessageShow(System::String^ text) {
+	private: void validationMessageShow(String^ text) {
 		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK);
 	}
-	private: void textBoxValidation(System::Windows::Forms::TextBox^ textBox, System::Windows::Forms::KeyPressEventArgs^ e) {
+	private: void textBoxValidation(Windows::Forms::TextBox^ textBox, Windows::Forms::KeyPressEventArgs^ e) {
 		// Disable typing before "-"
 		if (textBox->SelectionStart == 0 && textBox->Text->StartsWith("-")) {
 			e->Handled = true;
@@ -282,17 +284,25 @@ namespace Calc {
 		else if (!Char::IsDigit(e->KeyChar) && e->KeyChar != (Char)Keys::Back) {
 			e->Handled = true;
 		}
+
+	}
+	private: void textBoxValidationOnLeave(Windows::Forms::TextBox^ textBox) {
+		if (textBox->Text->EndsWith(",")) {
+			textBox->Text = textBox->Text->Replace(",", "");
+		}
+
+		if (textBox->Text->StartsWith(",")) {
+			textBox->Text = "0" + textBox->Text;
+		}
+
+		if (textBox->Text->StartsWith("-,")) {
+			textBox->Text = textBox->Text->Replace("-,", "-0,");
+		}
 	}
 	private: bool buttonClickValidation() {
 		if (firstNum->Text == "" || secondNum->Text == "") {
 			validationMessageShow("Значение поля не должно быть пустым");
 			return false;
-		}
-		if (firstNum->Text->StartsWith(",")) {
-			firstNum->Text = "0" + firstNum->Text;
-		}
-		if (secondNum->Text->StartsWith(",")) {
-			secondNum->Text = "0" + secondNum->Text;
 		}
 		return true;
 	}
@@ -355,6 +365,13 @@ namespace Calc {
 	}
 	private: System::Void secondNum_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
 		this->textBoxValidation(this->secondNum, e);
+	}
+
+	private: System::Void firstNum_Leave(System::Object^ sender, System::EventArgs^ e) {
+		textBoxValidationOnLeave(this->firstNum);
+	}
+	private: System::Void secondNum_Leave(System::Object^ sender, System::EventArgs^ e) {
+		textBoxValidationOnLeave(this->secondNum);
 	}
 };
 }

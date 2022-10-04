@@ -1,3 +1,6 @@
 D:\C++\Calc\Calc\Debug\Calc.vcxproj.AssemblyReference.cache
 D:\C++\Calc\Calc\Debug\Calc.MyForm.resources
 D:\C++\Calc\Calc\Debug\Calc.vcxproj.GenerateResource.cache
+D:\Study\2 курс\C++\Calc\Calc\Debug\Calc.vcxproj.AssemblyReference.cache
+D:\Study\2 курс\C++\Calc\Calc\Debug\Calc.MyForm.resources
+D:\Study\2 курс\C++\Calc\Calc\Debug\Calc.vcxproj.GenerateResource.cache

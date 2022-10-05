@@ -261,7 +261,7 @@ namespace Calc {
 	
 	// Helper functions
 	private: void validationMessageShow(String^ text) {
-		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK);
+		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 	private: void textBoxValidation(Windows::Forms::TextBox^ textBox, Windows::Forms::KeyPressEventArgs^ e) {
 		// Disable typing before "-"
@@ -300,6 +300,7 @@ namespace Calc {
 		}
 	}
 	private: bool buttonClickValidation() {
+		this->result->Text = "";
 		if (firstNum->Text == "" || secondNum->Text == "") {
 			validationMessageShow("Значение поля не должно быть пустым");
 			return false;

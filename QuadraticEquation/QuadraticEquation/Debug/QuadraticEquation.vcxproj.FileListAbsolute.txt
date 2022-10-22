@@ -1,3 +1,6 @@
 D:\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.vcxproj.AssemblyReference.cache
 D:\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.MyForm.resources
 D:\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.vcxproj.GenerateResource.cache
+D:\Study\2 курс\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.vcxproj.AssemblyReference.cache
+D:\Study\2 курс\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.MyForm.resources
+D:\Study\2 курс\C++\QuadraticEquation\QuadraticEquation\Debug\QuadraticEquation.vcxproj.GenerateResource.cache

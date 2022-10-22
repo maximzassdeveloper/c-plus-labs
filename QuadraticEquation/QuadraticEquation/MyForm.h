@@ -317,6 +317,10 @@ namespace QuadraticEquation {
 		}
 	}
 
+	private: bool valueValidation() {
+
+	}
+
 	// Buttons
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->inputA->Text = "";
@@ -346,16 +350,22 @@ namespace QuadraticEquation {
 		if (a == 0 && b == 0) {
 			this->inputX1->Hide();
 			this->inputX2->Hide();
-			return this->labelResult->Text = "Уравнение не корректно";
+			this->labelX1->Hide();
+			this->labelX2->Hide();
+			this->labelResult->Text = "Значение = " + Convert::ToString(c);
+			//return this->labelResult->Text = "Уравнение не корректно";
 		} 
 		else if (a == 0 && b != 0) {
 			this->inputX1->Text = Convert::ToString(-c / b);
 			this->inputX2->Hide();
+			this->labelX2->Hide();
 			return this->labelResult->Text = "Линейное уравнение - имеет один корень";
 		}
 		else {
 			this->inputX1->Show();
 			this->inputX2->Show();
+			this->labelX1->Show();
+			this->labelX2->Show();
 
 			double D = pow(b, 2) - 4 * a * c;
 

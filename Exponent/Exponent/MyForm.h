@@ -63,8 +63,6 @@ namespace Exponent {
 	private: System::Windows::Forms::Label^ labelCount;
 	private: System::Windows::Forms::Label^ labelSum;
 	
-
-	private: double accuracy = 0.1;
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -137,6 +135,7 @@ namespace Exponent {
 			this->inputX->Name = L"inputX";
 			this->inputX->Size = System::Drawing::Size(320, 27);
 			this->inputX->TabIndex = 0;
+			this->inputX->Text = L"1";
 			this->inputX->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::inputX_KeyPress);
 			// 
 			// groupBox1
@@ -166,7 +165,7 @@ namespace Exponent {
 			this->radioButton6->TabIndex = 8;
 			this->radioButton6->Text = L"0,000001";
 			this->radioButton6->UseVisualStyleBackColor = true;
-			this->radioButton6->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton6->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton5
 			// 
@@ -178,7 +177,7 @@ namespace Exponent {
 			this->radioButton5->TabIndex = 7;
 			this->radioButton5->Text = L"0,00001";
 			this->radioButton5->UseVisualStyleBackColor = true;
-			this->radioButton5->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton5->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton4
 			// 
@@ -189,8 +188,8 @@ namespace Exponent {
 			this->radioButton4->Size = System::Drawing::Size(80, 23);
 			this->radioButton4->TabIndex = 6;
 			this->radioButton4->Text = L"0,0001";
-			this->radioButton4->UseVisualStyleBackColor = true;
-			this->radioButton4->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton3->UseVisualStyleBackColor = true;
+			this->radioButton4->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton3
 			// 
@@ -202,7 +201,7 @@ namespace Exponent {
 			this->radioButton3->TabIndex = 5;
 			this->radioButton3->Text = L"0,001";
 			this->radioButton3->UseVisualStyleBackColor = true;
-			this->radioButton3->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton3->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton2
 			// 
@@ -214,7 +213,7 @@ namespace Exponent {
 			this->radioButton2->TabIndex = 4;
 			this->radioButton2->Text = L"0,01";
 			this->radioButton2->UseVisualStyleBackColor = true;
-			this->radioButton2->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton2->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton1
 			// 
@@ -228,7 +227,7 @@ namespace Exponent {
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"0,1";
 			this->radioButton1->UseVisualStyleBackColor = true;
-			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton_CheckedChanged);
+			this->radioButton1->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// title
 			// 
@@ -334,7 +333,6 @@ namespace Exponent {
 			this->labelSource->Name = L"labelSource";
 			this->labelSource->Size = System::Drawing::Size(174, 23);
 			this->labelSource->TabIndex = 11;
-			this->labelSource->Text = L"label6";
 			this->labelSource->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// labelAccuracy
@@ -345,7 +343,6 @@ namespace Exponent {
 			this->labelAccuracy->Name = L"labelAccuracy";
 			this->labelAccuracy->Size = System::Drawing::Size(174, 23);
 			this->labelAccuracy->TabIndex = 12;
-			this->labelAccuracy->Text = L"label6";
 			this->labelAccuracy->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// labelAccuracyExp
@@ -356,7 +353,6 @@ namespace Exponent {
 			this->labelAccuracyExp->Name = L"labelAccuracyExp";
 			this->labelAccuracyExp->Size = System::Drawing::Size(174, 23);
 			this->labelAccuracyExp->TabIndex = 13;
-			this->labelAccuracyExp->Text = L"label6";
 			this->labelAccuracyExp->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// labelCount
@@ -367,7 +363,6 @@ namespace Exponent {
 			this->labelCount->Name = L"labelCount";
 			this->labelCount->Size = System::Drawing::Size(174, 23);
 			this->labelCount->TabIndex = 14;
-			this->labelCount->Text = L"label6";
 			this->labelCount->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// labelSum
@@ -378,7 +373,6 @@ namespace Exponent {
 			this->labelSum->Name = L"labelSum";
 			this->labelSum->Size = System::Drawing::Size(174, 23);
 			this->labelSum->TabIndex = 15;
-			this->labelSum->Text = L"label6";
 			this->labelSum->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// MyForm
@@ -406,6 +400,7 @@ namespace Exponent {
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
 			this->Name = L"MyForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Расчёт exp(x)";
 			this->groupBoxX->ResumeLayout(false);
 			this->groupBoxX->PerformLayout();
@@ -416,10 +411,96 @@ namespace Exponent {
 
 		}
 #pragma endregion
+
+	private: double accuracy = 0.01;
+	private: String^ strAccuracy = "0.1";
+	private: int count = 0;
+	
+
+	// Helper
+	private: Void showMessage(String^ text) {
+		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+
+	private: double checkInputX() {
+		String^ text = this->inputX->Text;
+		if (text == "-") {
+			this->inputX->Text = "1";
+		}
+		if (text->EndsWith(",")) {
+			this->inputX->Text = text + "0";
+		}
+
+		double x = Convert::ToDouble(this->inputX->Text);
+		if (x < -13) {
+			x = -13;
+			this->inputX->Text = "-13";
+			showMessage("Значение \"x\" было изменено на -13");
+		}
+		else if (x > 20) {
+			x = 20;
+			this->inputX->Text = "20";
+			showMessage("Значение \"x\" было изменено на 20");
+		}
+
+		return x;
+	}
+
+	private: Void selectAccuracy() {
+		String^ strAccuracy = "";
+		if (radioButton1->Checked) { strAccuracy = radioButton1->Text; }
+		if (radioButton2->Checked) { strAccuracy = radioButton2->Text; }
+		if (radioButton3->Checked) { strAccuracy = radioButton3->Text; }
+		if (radioButton4->Checked) { strAccuracy = radioButton4->Text; }
+		if (radioButton5->Checked) { strAccuracy = radioButton5->Text; }
+		if (radioButton6->Checked) { strAccuracy = radioButton6->Text; }
+
+		this->accuracy = Convert::ToDouble(strAccuracy) / 10;
+		this->strAccuracy = strAccuracy;
+	}
+
+	private: double factorial(double num) {
+		if (num == 1 || num == 2) {
+			return num;
+		}
+		return num * factorial(num-1);
+	}
+
+	private: double calcSumRow(double x, double eps) {
+		double res = 1;
+		double added = 1;
+		int i = 0;
+		while (Math::Abs(added) > eps) {
+			i += 1;
+			added = Math::Pow(x, i) / factorial(i);
+			res += added;
+		}
+
+		this->count = i;
+		return res;
+	}
+
+	private: Void clearData() {
+		this->labelSource->Text = "";
+		this->labelAccuracy->Text = "";
+		this->labelAccuracyExp->Text = "";
+		this->labelCount->Text = "";
+		this->labelSum->Text = "";
+	}
+
+	// Main
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 	}
+
+	private: System::Void radioButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		selectAccuracy();
+		clearData();
+	}
+	
 	private: System::Void inputX_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+		clearData();
+
 		// Disable typing before "-"
 		if (inputX->SelectionStart == 0 && inputX->Text->StartsWith("-")) {
 			e->Handled = true;
@@ -441,26 +522,24 @@ namespace Exponent {
 			e->Handled = true;
 		}
 	}
+
 	private: System::Void calcBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		String^ xStr = this->inputX->Text;
-		if (xStr == "") {
-			MessageBox::Show("Значение x не должно быть пустым");
+		if (this->inputX->Text == "") {
+			showMessage("Значение \"x\" не должно быть пустым");
 			return;
 		}
-		double x = Convert::ToDouble(xStr);
-		if (x < -13) {
-			x = -13;
-			MessageBox::Show("Значение x было изменено на -13");
-		}
-		else if (x > 20) {
-			x = 20;
-			MessageBox::Show("Значение x было изменено на 20");
-		}
+
+		double x = checkInputX();
+		double accuracyExp = Math::Exp(x);
+		accuracyExp = Math::Round(accuracyExp / accuracy) * accuracy;
+		double sumRow = calcSumRow(x, this->accuracy);
+		sumRow = Math::Round(sumRow / accuracy) * accuracy;
 
 		this->labelSource->Text = Convert::ToString(x);
-	}
-	private: System::Void radioButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		
+		this->labelAccuracy->Text = strAccuracy;
+		this->labelAccuracyExp->Text = Convert::ToString(accuracyExp);
+		this->labelCount->Text = Convert::ToString(this->count);
+		this->labelSum->Text = Convert::ToString(sumRow);
 	}
 };
 }

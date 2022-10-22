@@ -473,34 +473,32 @@ namespace ModernCalc {
 		}
 #pragma endregion
 
-	/*TODO добавить нули перед запятыми, убрать второе поле, несколько раз равно*/
-
-	// Helper
+		// Helper
 	private: double operatorSwitch(String^ oper, String^ strNum1, String^ strNum2) {
 		double num1 = Convert::ToDouble(strNum1);
 		double num2 = Convert::ToDouble(strNum2);
 		switch (Convert::ToChar(oper))
 		{
-			case '/':
-				return num1 / num2;
-			case '*':
-				return num1 * num2;
-			case '-':
-				return num1 - num2;
-			case '+':
-				return num1 + num2;
-			default:
-				return 0;
+		case '/':
+			return num1 / num2;
+		case '*':
+			return num1 * num2;
+		case '-':
+			return num1 - num2;
+		case '+':
+			return num1 + num2;
+		default:
+			return 0;
 		}
 	}
 	private: Void triggerOperator(String^ oper) {
 		if (this->input->Text == "") {
 			return;
 		}
-		
+
 		if (this->cashValue != "") {
 			if (this->cashOperator == "/" && this->input->Text == "0") {
-				MessageBox::Show("Деление на ноль невозможно", "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				MessageBox::Show("Деление на ноль невозможно", "Уведомление", MessageBoxButtons::OK);
 				return;
 			}
 			calcResult();
@@ -508,10 +506,9 @@ namespace ModernCalc {
 
 		this->cashValue = this->input->Text;
 		this->cashOperator = oper;
-		this->input->Text = oper;
-		// this->cashInput->Text = this->input->Text + " " + oper;
-		// this->input->Text = "";
-		// this->input->Focus();
+		this->cashInput->Text = this->input->Text + " " + oper;
+		this->input->Text = "";
+		this->input->Focus();
 
 	}
 	private: Void calcResult() {
@@ -523,19 +520,17 @@ namespace ModernCalc {
 	}
 	private: Void equalsFunc() {
 		if (this->cashOperator == "/" && this->input->Text == "0") {
-			MessageBox::Show("Деление на ноль невозможно", "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("Деление на ноль невозможно", "Уведомление", MessageBoxButtons::OK);
 			return;
 		}
 		calcResult();
-		// this->cashValue = "";
-		// this->cashOperator = "";
-		// this->cashInput->Text = "";
+		this->cashValue = "";
+		this->cashOperator = "";
+		this->cashInput->Text = "";
 	}
-	
-	// Input KeyPress
+
+		   // Input KeyPress
 	private: System::Void input_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
-		e->Handled = true;
-		/*
 		// Disable typing before "-"
 		if (input->SelectionStart == 0 && input->Text->StartsWith("-")) {
 			e->Handled = true;
@@ -560,57 +555,41 @@ namespace ModernCalc {
 		else if (!Char::IsDigit(e->KeyChar) && e->KeyChar != (Char)Keys::Back) {
 			e->Handled = true;
 		}
-		*/
 	}
-	
-	private: Void checkFunc() {
-		if (this->input->Text == "+" || this->input->Text == "-" || this->input->Text == "/" || this->input->Text == "*") {
-			this->input->Text = "";
-		}
-	}
-	// Numbers
+
+		   // Numbers
 	private: System::Void seven_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "7";
 	}
 	private: System::Void eight_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "8";
 	}
 	private: System::Void nine_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "9";
 	}
 	private: System::Void four_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "4";
 	}
 	private: System::Void five_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "5";
 	}
 	private: System::Void six_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "6";
 	}
 	private: System::Void three_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "3";
 	}
 	private: System::Void two_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "2";
 	}
 	private: System::Void one_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "1";
 	}
 	private: System::Void zero_Click(System::Object^ sender, System::EventArgs^ e) {
-		checkFunc();
 		this->input->Text = this->input->Text + "0";
 	}
-	
-	// Support Actions
+
+		   // Support Actions
 	private: System::Void clean_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->input->Text = "";
 		this->cashValue = "";
@@ -626,7 +605,7 @@ namespace ModernCalc {
 		}
 
 		String^ text = this->input->Text;
-		this->input->Text = text->Remove(text->Length-1, 1);
+		this->input->Text = text->Remove(text->Length - 1, 1);
 	}
 	private: System::Void negative_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ text = this->input->Text;
@@ -643,13 +622,10 @@ namespace ModernCalc {
 	private: System::Void comma_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!this->input->Text->Contains(",")) {
 			this->input->Text = this->input->Text + ",";
-			if (this->input->Text->StartsWith(",")) {
-				this->input->Text = "0" + this->input->Text;
-			}
 		}
 	}
 
-	// Main Actions
+		   // Main Actions
 	private: System::Void division_Click(System::Object^ sender, System::EventArgs^ e) {
 		triggerOperator("/");
 	}
@@ -666,7 +642,7 @@ namespace ModernCalc {
 		equalsFunc();
 	}
 
-	// Other Actions
+		   // Other Actions
 	private: System::Void percent_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->input->Text == "") {
 			return;

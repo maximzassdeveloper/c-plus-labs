@@ -495,11 +495,12 @@ namespace ModernCalc3 {
 			return false;
 		}
 		if (this->input->Text->EndsWith(",")) {
-			showMessage("Значение не должно заканчиваться на запятую.");
-			return false;
+			//showMessage("Значение не должно заканчиваться на запятую.");
+			this->input->Text = this->input->Text + "0";
+			return true;
 		}
 		if (this->input->Text->EndsWith("-")) {
-			showMessage("Значение не должно заканчиваться на минус.");
+			//showMessage("Значение не должно заканчиваться на минус.");
 			return false;
 		}
 
@@ -527,7 +528,9 @@ namespace ModernCalc3 {
 	private: Void triggerOperator(String^ oper) {
 		if (!inputCheck()) return;
 
-		if (this->input->Text == "0" && this->cashOperator == "/") {
+		if ((this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") && this->cashOperator == "/") {
+			this->input->Text = "";
+			this->cashSecond = "";
 			showMessage("Делить на 0 нельзя.");
 			return;
 		}
@@ -559,7 +562,9 @@ namespace ModernCalc3 {
 
 		if (this->cashOperator != "" && this->cashFirst != "" && this->cashSecond != "") {
 
-			if (this->cashSecond == "0" && this->cashOperator == "/") {
+			if ((this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") && this->cashOperator == "/") {
+				this->input->Text = "";
+				this->cashSecond = "";
 				showMessage("Делить на 0 нельзя.");
 				return;
 			}
@@ -640,7 +645,7 @@ namespace ModernCalc3 {
 
 	private: System::Void negative_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ text = this->input->Text;
-		if (text == "0") {
+		if (text == "0" || text == "0," || text == "0,0") {
 			return;
 		}
 		if (text->StartsWith("-")) {
@@ -656,7 +661,16 @@ namespace ModernCalc3 {
 	}
 
 	private: System::Void comma_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (this->secondValTime) {
+			this->input->Text = "";
+			this->secondValTime = false;
+		}
 		if (!this->input->Text->Contains(",")) {
+			//if (this->secondValTime) {
+				//this->input->Text = "";
+				//this->secondValTime = false;
+			//}
+
 			if (this->input->Text == "") {
 				this->input->Text = "0";
 			}
@@ -678,6 +692,7 @@ namespace ModernCalc3 {
 		triggerOperator("+");
 	}
 	private: System::Void equal_Click(System::Object^ sender, System::EventArgs^ e) {
+
 		calcResult();
 		this->secondValTime = false;
 		this->afterEquals = true;
@@ -690,16 +705,22 @@ namespace ModernCalc3 {
 			return this->input->Text = "0";
 		}
 		this->input->Text = Convert::ToString(Convert::ToDouble(this->cashFirst) * (Convert::ToDouble(this->input->Text) / 100));
+		//this->cashSecond = this->input->Text;
 
-		if (this->cashFirst != "") {
-			this->cashFirst = this->input->Text;
-		}
+		//this->cashInput->Text = this->cashFirst + " " + this->cashOperator + " " + this->cashSecond;
+
+		//if (this->cashFirst != "") {
+		//	this->cashFirst = this->input->Text;
+		//}
+		//this->cashInput->Text = this->cashFirst + " " + this->cashOperator + " " + this->cashSecond;
 	}
 
 	private: System::Void oneDivision_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!inputCheck()) return;
 
-		if (this->input->Text == "0" && this->cashOperator == "/") {
+		if (this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") {
+			this->input->Text = "";
+			this->cashSecond = "";
 			showMessage("Делить на 0 нельзя.");
 			return;
 		}

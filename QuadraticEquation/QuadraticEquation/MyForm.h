@@ -146,6 +146,7 @@ namespace QuadraticEquation {
 			this->inputA->Name = L"inputA";
 			this->inputA->Size = System::Drawing::Size(120, 27);
 			this->inputA->TabIndex = 5;
+			this->inputA->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->inputA->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::inputA_KeyPress);
 			// 
 			// inputB
@@ -155,6 +156,7 @@ namespace QuadraticEquation {
 			this->inputB->Name = L"inputB";
 			this->inputB->Size = System::Drawing::Size(120, 27);
 			this->inputB->TabIndex = 6;
+			this->inputB->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->inputB->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::inputB_KeyPress);
 			// 
 			// inputC
@@ -164,6 +166,7 @@ namespace QuadraticEquation {
 			this->inputC->Name = L"inputC";
 			this->inputC->Size = System::Drawing::Size(120, 27);
 			this->inputC->TabIndex = 7;
+			this->inputC->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->inputC->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::inputC_KeyPress);
 			// 
 			// labelRoots
@@ -187,6 +190,7 @@ namespace QuadraticEquation {
 			this->inputX1->Size = System::Drawing::Size(120, 27);
 			this->inputX1->TabIndex = 10;
 			this->inputX1->TabStop = false;
+			this->inputX1->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// labelX1
 			// 
@@ -209,6 +213,7 @@ namespace QuadraticEquation {
 			this->inputX2->Size = System::Drawing::Size(120, 27);
 			this->inputX2->TabIndex = 12;
 			this->inputX2->TabStop = false;
+			this->inputX2->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// labelX2
 			// 
@@ -285,9 +290,11 @@ namespace QuadraticEquation {
 			this->Controls->Add(this->labelC);
 			this->Controls->Add(this->labelA);
 			this->Controls->Add(this->labelCoeff);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->MaximizeBox = false;
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"MyForm";
+			this->Text = L"Расчет квадратного уравнения";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -326,16 +333,32 @@ namespace QuadraticEquation {
 		this->inputX2->Text = "";
 		this->labelResult->Text = "";
 	}
+	private: Void checkInput(Windows::Forms::TextBox^ input) {
+		if (input->Text->StartsWith("-,")) {
+			input->Text = input->Text->Remove(0, 2);
+			input->Text = "-0," + input->Text;
+		}
+		if (input->Text->StartsWith(",")) {
+			input->Text = "0" + input->Text;
+		}
+		if (input->Text->EndsWith(",")) {
+			input->Text = input->Text + "0";
+		}
+		if (input->Text == "-") {
+			input->Text = "0";
+		}
+	}
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		if (!this->inputA->Text->Length) {
-			this->inputA->Text = "0";
-		}
-		if (!this->inputB->Text->Length) {
-			this->inputB->Text = "0";
-		}
-		if (!this->inputC->Text->Length) {
-			this->inputC->Text = "0";
+		checkInput(inputA);
+		checkInput(inputB);
+		checkInput(inputC);
+
+		if (inputA->Text == "" || inputB->Text == "" || inputC->Text == "") {
+			labelResult->Text = "Введите недостающие коэффициенты!";
+			inputX1->Text = "";
+			inputX2->Text = "";
+			return;
 		}
 
 		double a = Convert::ToDouble(this->inputA->Text);
@@ -370,16 +393,16 @@ namespace QuadraticEquation {
 				inputX2->Text = "";
 				inputX1->Text = Convert::ToString(-c / b);
 
-				labelResult->Text = L"Уравнение имеет 1 корень\nУравнение является линейным!";
+				labelResult->Text = L"Уравнение является линейным!\nУравнение имеет 1 корень.";
 			}
 			else {
 				inputX2->Text = "";
 				inputX1->Text = "";
 				if (c != 0) {
-					labelResult->Text = "Неверное равенство!";
+					labelResult->Text = Convert::ToString(c) + " = 0\nНеверное равенство!";
 				}
 				else {
-					labelResult->Text = "Верное равенство!";
+					labelResult->Text = "0 = 0\nВерное равенство!";
 				}
 			}
 

@@ -133,6 +133,7 @@ namespace Exponent {
 			this->inputX->Font = (gcnew System::Drawing::Font(L"Arial", 10));
 			this->inputX->Location = System::Drawing::Point(58, 34);
 			this->inputX->Name = L"inputX";
+			this->inputX->ShortcutsEnabled = false;
 			this->inputX->Size = System::Drawing::Size(320, 27);
 			this->inputX->TabIndex = 0;
 			this->inputX->Text = L"1";
@@ -188,7 +189,6 @@ namespace Exponent {
 			this->radioButton4->Size = System::Drawing::Size(80, 23);
 			this->radioButton4->TabIndex = 6;
 			this->radioButton4->Text = L"0,0001";
-			this->radioButton3->UseVisualStyleBackColor = true;
 			this->radioButton4->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
 			// 
 			// radioButton3

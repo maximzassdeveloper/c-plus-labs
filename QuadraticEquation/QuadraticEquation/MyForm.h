@@ -317,10 +317,6 @@ namespace QuadraticEquation {
 		}
 	}
 
-	private: bool valueValidation() {
-
-	}
-
 	// Buttons
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->inputA->Text = "";
@@ -328,11 +324,10 @@ namespace QuadraticEquation {
 		this->inputC->Text = "";
 		this->inputX1->Text = "";
 		this->inputX2->Text = "";
-		this->inputX1->Show();
-		this->inputX2->Show();
 		this->labelResult->Text = "";
 	}
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
+
 		if (!this->inputA->Text->Length) {
 			this->inputA->Text = "0";
 		}
@@ -346,42 +341,48 @@ namespace QuadraticEquation {
 		double a = Convert::ToDouble(this->inputA->Text);
 		double b = Convert::ToDouble(this->inputB->Text);
 		double c = Convert::ToDouble(this->inputC->Text);
+		double D = pow(b, 2) - 4 * a * c;
 
-		if (a == 0 && b == 0) {
-			this->inputX1->Hide();
-			this->inputX2->Hide();
-			this->labelX1->Hide();
-			this->labelX2->Hide();
-			this->labelResult->Text = "Значение = " + Convert::ToString(c);
-			//return this->labelResult->Text = "Уравнение не корректно";
-		} 
-		else if (a == 0 && b != 0) {
-			this->inputX1->Text = Convert::ToString(-c / b);
-			this->inputX2->Hide();
-			this->labelX2->Hide();
-			return this->labelResult->Text = "Линейное уравнение - имеет один корень";
+		if (a != 0) {
+			D = pow(b, 2) - 4 * a * c;
+			if (D > 0) {
+				inputX1->Text = Convert::ToString((-b + sqrt(D)) / 2 * a);
+				inputX2->Text = Convert::ToString((-b - sqrt(D)) / 2 * a);
+
+				labelResult->Text = L"Дискриминант больше нуля.\nУравнение имеет 2 различных корня.";
+			}
+			else if (D == 0) {
+				inputX2->Text = "";
+				inputX1->Text = Convert::ToString(-b / 2 * a);
+				inputX2->Text = inputX1->Text;
+
+				labelResult->Text = L"Дискриминант равен нулю.\nУравнение имеет 2 одинаковых корня.";
+			}
+			else {
+				inputX2->Text = "";
+				inputX1->Text = "";
+				labelResult->Text = L"Дискриминант меньше нуля.\nУравнение не имеет действительных корней.";
+
+			}
 		}
 		else {
-			this->inputX1->Show();
-			this->inputX2->Show();
-			this->labelX1->Show();
-			this->labelX2->Show();
+			if (b != 0) {
+				inputX2->Text = "";
+				inputX1->Text = Convert::ToString(-c / b);
 
-			double D = pow(b, 2) - 4 * a * c;
-
-			if (D > 0) {
-				this->labelResult->Text = "Дискриминант > 0 \nУравнение имеет два корня";
-			} else if (D < 0) {
-				this->labelResult->Text = "Дискриминант < 0 \nДействительных корней уравнения не существует";
-			} else {
-				this->labelResult->Text = "Дискриминант = 0 \nУравнение имеет два одинаковых корня";
+				labelResult->Text = L"Уравнение имеет 1 корень\nУравнение является линейным!";
+			}
+			else {
+				inputX2->Text = "";
+				inputX1->Text = "";
+				if (c != 0) {
+					labelResult->Text = "Неверное равенство!";
+				}
+				else {
+					labelResult->Text = "Верное равенство!";
+				}
 			}
 
-			double x1 = (-b + sqrt(D)) / (2 * a);
-			double x2 = (-b - sqrt(D)) / (2 * a);
-
-			this->inputX1->Text = Convert::ToString(x1);
-			this->inputX2->Text = Convert::ToString(x2);
 		}
 	}
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {

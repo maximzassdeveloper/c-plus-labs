@@ -547,6 +547,7 @@ namespace ModernCalc3 {
 		this->afterEquals = false;
 		this->cashOperator = oper;
 		this->secondValTime = true;
+		this->cashSecond = "";
 	}
 
 	private: Void calcResult() {

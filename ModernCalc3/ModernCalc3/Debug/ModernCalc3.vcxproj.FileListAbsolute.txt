@@ -1,1 +1,2 @@
 D:\C++\ModernCalc3\ModernCalc3\Debug\ModernCalc3.vcxproj.AssemblyReference.cache
+D:\Study\2 курс\C++\ModernCalc3\ModernCalc3\Debug\ModernCalc3.vcxproj.AssemblyReference.cache

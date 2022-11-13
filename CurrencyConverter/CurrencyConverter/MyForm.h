@@ -118,7 +118,6 @@ namespace CurrencyConverter {
 			// 
 			this->inputExchange->Location = System::Drawing::Point(210, 69);
 			this->inputExchange->Name = L"inputExchange";
-			this->inputExchange->ReadOnly = true;
 			this->inputExchange->ShortcutsEnabled = false;
 			this->inputExchange->Size = System::Drawing::Size(119, 25);
 			this->inputExchange->TabIndex = 3;
@@ -266,10 +265,12 @@ namespace CurrencyConverter {
 			// rbDollarToRouble
 			// 
 			this->rbDollarToRouble->AutoSize = true;
+			this->rbDollarToRouble->Checked = true;
 			this->rbDollarToRouble->Location = System::Drawing::Point(13, 32);
 			this->rbDollarToRouble->Name = L"rbDollarToRouble";
 			this->rbDollarToRouble->Size = System::Drawing::Size(145, 21);
 			this->rbDollarToRouble->TabIndex = 0;
+			this->rbDollarToRouble->TabStop = true;
 			this->rbDollarToRouble->Text = L"Доллары в рубли";
 			this->rbDollarToRouble->UseVisualStyleBackColor = true;
 			this->rbDollarToRouble->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
@@ -313,6 +314,7 @@ namespace CurrencyConverter {
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"АРМ оператора обменного пункта";
+			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->groupBoxInitial->ResumeLayout(false);
 			this->groupBoxInitial->PerformLayout();
 			this->groupBoxResult->ResumeLayout(false);
@@ -324,11 +326,12 @@ namespace CurrencyConverter {
 		}
 #pragma endregion
 
-	double roubleToDollar = 68.99;
-	double dollarToRouble = 59.76;
+	double roubleToDollar = 0;
+	double dollarToRouble = 0;
+	double roubleToEuro = 0;
+	double euroToRouble = 0;
 
-	double roubleToEuro = 67.37;
-	double euroToRouble = 56.43;
+	String^ curRb = "roubleToDollar";
 
 	String^ roubleExch = "RUB";
 	String^ dollarExch = "USD";
@@ -371,9 +374,13 @@ namespace CurrencyConverter {
 		}
 	}
 
-	private: void inputValidate(Windows::Forms::TextBox^ textbox) {
+	private: bool inputValidate(Windows::Forms::TextBox^ textbox) {
 		if (textbox->Text == "" || textbox->Text == ",") {
-			textbox->Text = "1,00";
+			return false;
+		}
+
+		if (textbox->Text->StartsWith(",")) {
+			textbox->Text = "0" + textbox->Text;
 		}
 
 		// Добавляет нули в конец, если их не хватает
@@ -381,43 +388,96 @@ namespace CurrencyConverter {
 		
 		// Если значение равно 0, сделать 1
 		if (Convert::ToDouble(textbox->Text) == 0) {
-			textbox->Text = "1,00";
+			return false;
 		}		
+		return true;
+	}
+
+	private: bool exchangeValidate(Windows::Forms::TextBox^ textbox) {
+		if (textbox->Text == "" || textbox->Text == "," || Convert::ToDouble(textbox->Text) == 0) {
+			//MessageBox::Show("Некорректное значение курса обмена", "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			return false;
+		}
+
+		if (textbox->Text->StartsWith(",")) {
+			textbox->Text = "0" + textbox->Text;
+		}
+
+		// Добавляет нули в конец, если их не хватает
+		textbox->Text = formatNumber(textbox->Text);
+
+		return true;
 	}
 
 	private: void generateCourseText() {
-		double exch = Math::Round(cource * 10000) / 10000;
-
-		inputExchange->Text = formatNumber(Convert::ToString(exch));
+		
+		if (cource != 0) {
+			double exch = Math::Round(cource * 10000) / 10000;
+			inputExchange->Text = formatNumber(Convert::ToString(exch));
+		}
+		
 		labelExch->Text = String::Format("Курс обмена({0} / {1}):", fromExch, toExch);
+
+		if (!curRb->StartsWith("rouble")) {
+			fromExch = toExch;
+			toExch = roubleExch;
+			//fromExch = roubleExch;
+		}
 
 		labelFrom->Text = fromExch;
 		labelTo->Text = toExch;
 	}
 
 	private: String^ selectRb() {
+		
+		if (exchangeValidate(inputExchange)) {
+
+			if (curRb == "dollarToRouble") {
+				dollarToRouble = Convert::ToDouble(inputExchange->Text);
+				cource = dollarToRouble;
+			}
+			else if (curRb == "roubleToDollar") {
+				roubleToDollar = Convert::ToDouble(inputExchange->Text);
+				cource = roubleToDollar;
+			}
+			else if (curRb == "euroToRouble") {
+				euroToRouble = Convert::ToDouble(inputExchange->Text);
+				cource = euroToRouble;
+			}
+			else if (curRb == "roubleToEuro") {
+				roubleToEuro = Convert::ToDouble(inputExchange->Text);
+				cource = roubleToEuro;
+			}
+		}
+
+		
+
 		if (rbDollarToRouble->Checked) {
-			fromExch = dollarExch;
-			toExch = roubleExch;
+			fromExch = roubleExch;
+			toExch = dollarExch;
 			cource = dollarToRouble;
+			curRb = "dollarToRouble";
 			return rbDollarToRouble->Text;
 		}
 		if (rbRoubleToDollar->Checked) {
 			fromExch = roubleExch;
 			toExch = dollarExch;
-			cource = 1 / roubleToDollar;
+			cource = roubleToDollar;
+			curRb = "roubleToDollar";
 			return rbRoubleToDollar->Text;
 		}
 		if (rbEuroToRouble->Checked) {
-			fromExch = euroExch;
-			toExch = roubleExch;
+			fromExch = roubleExch;
+			toExch = euroExch;
 			cource = euroToRouble;
+			curRb = "euroToRouble";
 			return rbEuroToRouble->Text;
 		}
 		if (rbRoubleToEuro->Checked) {
 			fromExch = roubleExch;
 			toExch = euroExch;
-			cource = 1 / roubleToEuro;
+			cource = roubleToEuro;
+			curRb = "roubleToEuro";
 			return rbRoubleToEuro->Text;
 		}
 		return "";
@@ -433,6 +493,7 @@ namespace CurrencyConverter {
 		inputFrom->Text = "";
 		inputTo->Text = "";
 		generateCourseText();
+
 	}
 
 	private: System::Void inputValue_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
@@ -444,32 +505,58 @@ namespace CurrencyConverter {
 	}
 
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
-		inputValidate(inputValue);
-
-		String^ rb = selectRb();
-
-		if (rb == "") {
-			rbDollarToRouble->Checked = true;
-			rb = selectRb();
+		bool isSuccess2 = inputValidate(inputValue);
+		bool isSuccess = exchangeValidate(inputExchange);
+		if (!isSuccess2) {
+			inputValue->Text = "";
+			MessageBox::Show("Некорректное значение суммы конвертации", "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		if (!isSuccess) {
+			inputExchange->Text = "";
+			MessageBox::Show("Некорректное значение курса обмена", "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
 		}
 
-		double res;
-		if (rb->StartsWith("Рубли"))
+		if (exchangeValidate(inputExchange)) {
+			if (curRb == "dollarToRouble") {
+				dollarToRouble = Convert::ToDouble(inputExchange->Text);
+				cource = dollarToRouble;
+			}
+			else if (curRb == "roubleToDollar") {
+				roubleToDollar = Convert::ToDouble(inputExchange->Text);
+				cource = roubleToDollar;
+			}
+			else if (curRb == "euroToRouble") {
+				euroToRouble = Convert::ToDouble(inputExchange->Text);
+				cource = euroToRouble;
+			}
+			else if (curRb == "roubleToEuro") {
+				roubleToEuro = Convert::ToDouble(inputExchange->Text);
+				cource = roubleToEuro;
+			}
+		}
 
-		res = Convert::ToDouble(inputValue->Text) * cource;
-		res = Math::Round(res * 100) / 100;
-		
-		/*
-		double roubleToDollar = 68.99;
-		double dollarToRouble = 59.76;
-
-		double roubleToEuro = 67.37;
-		double euroToRouble = 56.43;
-		*/
-
+		String^ rb = selectRb();
 		generateCourseText();
+
+		if (rb == "Рубли в доллары") {
+			cource = 1 / roubleToDollar;
+		}
+		else if (rb == "Рубли в евро") {
+			cource = 1 / roubleToEuro;
+		}
+
+		double res = Convert::ToDouble(inputValue->Text) * cource;
+
+		res = Math::Floor(res * 100) / 100;
+
 		inputTo->Text = formatNumber(Convert::ToString(res));
-		labelFrom->Text = fromExch;
+		inputFrom->Text = inputValue->Text;
 	}
+private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	selectRb();
+	generateCourseText();
+}
 };
 }

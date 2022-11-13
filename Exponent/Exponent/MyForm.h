@@ -379,7 +379,7 @@ namespace Exponent {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::White;
+			this->BackColor = System::Drawing::Color::Linen;
 			this->ClientSize = System::Drawing::Size(432, 531);
 			this->Controls->Add(this->labelSum);
 			this->Controls->Add(this->labelCount);
@@ -402,6 +402,7 @@ namespace Exponent {
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Расчёт exp(x)";
+			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->groupBoxX->ResumeLayout(false);
 			this->groupBoxX->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
@@ -415,6 +416,8 @@ namespace Exponent {
 	private: double accuracy = 0.01;
 	private: String^ strAccuracy = "0.1";
 	private: int count = 0;
+	private: int max = 20;
+	private: int min = -13;
 	
 
 	// Helper
@@ -432,15 +435,15 @@ namespace Exponent {
 		}
 
 		double x = Convert::ToDouble(this->inputX->Text);
-		if (x < -13) {
-			x = -13;
-			this->inputX->Text = "-13";
-			showMessage("Значение \"x\" было изменено на -13");
+		if (x < min) {
+			x = min;
+			this->inputX->Text = Convert::ToString(min);
+			showMessage("Значение \"x\" было изменено на " + Convert::ToString(min));
 		}
-		else if (x > 20) {
-			x = 20;
-			this->inputX->Text = "20";
-			showMessage("Значение \"x\" было изменено на 20");
+		else if (x > max) {
+			x = max;
+			this->inputX->Text = Convert::ToString(max);
+			showMessage("Значение \"x\" было изменено на " + Convert::ToString(max));
 		}
 
 		return x;
@@ -523,12 +526,32 @@ namespace Exponent {
 		}
 	}
 
-	private: System::Void calcBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (this->inputX->Text == "") {
-			showMessage("Значение \"x\" не должно быть пустым");
-			return;
+	private: void findAccuracy(int index) {
+		radioButton1->Checked = false;
+		radioButton2->Checked = false;
+		radioButton3->Checked = false;
+		radioButton4->Checked = false;
+		radioButton5->Checked = false;
+		radioButton6->Checked = false;
+		switch (index) {
+		case 1: 
+			radioButton1->Checked = true;
+		case 2:
+			radioButton2->Checked = true;
+		case 3:
+			radioButton3->Checked = true;
+		case 4:
+			radioButton4->Checked = true;
+		case 5:
+			radioButton5->Checked = true;
+		case 6:
+			radioButton6->Checked = true;
+		default:
+			break;
 		}
+	}
 
+	private: void calc() {
 		double x = checkInputX();
 		double accuracyExp = Math::Exp(x);
 		accuracyExp = Math::Round(accuracyExp / accuracy) * accuracy;
@@ -541,5 +564,29 @@ namespace Exponent {
 		this->labelCount->Text = Convert::ToString(this->count);
 		this->labelSum->Text = Convert::ToString(sumRow);
 	}
+
+	private: System::Void calcBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (this->inputX->Text == "") {
+			showMessage("Значение \"x\" не должно быть пустым");
+			return;
+		}
+
+		calc();
+
+		if (labelAccuracyExp->Text == "0") {
+			for (int i = 2; i < 6; i++) {
+				findAccuracy(i);
+				selectAccuracy();
+
+				calc();
+				if (labelAccuracyExp->Text != "0") {
+					break;
+				}
+			}
+		}
+
+	}
+private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }

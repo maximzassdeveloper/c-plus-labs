@@ -1,0 +1,3 @@
+D:\Study\2 курс\C++\Arrays\Arrays\Debug\Arrays.vcxproj.AssemblyReference.cache
+D:\Study\2 курс\C++\Arrays\Arrays\Debug\Arrays.MyForm.resources
+D:\Study\2 курс\C++\Arrays\Arrays\Debug\Arrays.vcxproj.GenerateResource.cache

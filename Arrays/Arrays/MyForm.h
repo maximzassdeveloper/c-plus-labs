@@ -589,7 +589,7 @@ namespace Arrays {
 			String^ newItem = "";
 
 			for (int j = 0; j < item->Length; j++) {
-				if (item[j] == ',' && !newItem->Contains(",") && newItem != "") {
+				if ((item[j] == ',' || item[j] == '.') && !newItem->Contains(",") && newItem != "") {
 					newItem += ",";
 				}
 				if (Char::IsDigit(item[j])) {
@@ -644,6 +644,7 @@ namespace Arrays {
 		if (inputCount->Text != "" && Convert::ToDouble(inputCount->Text) == 0) {
 			inputCount->Text = "1";
 		}
+		inputRes->Text = "";
 	}
 
 	private: System::Void inputMin_Leave(System::Object^ sender, System::EventArgs^ e) {

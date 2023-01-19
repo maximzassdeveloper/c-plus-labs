@@ -115,14 +115,12 @@ namespace ModernCalc3 {
 			// 
 			this->input->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Right));
 			this->input->BackColor = System::Drawing::Color::White;
-			this->input->Enabled = false;
 			this->input->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->input->ForeColor = System::Drawing::Color::Black;
 			this->input->Location = System::Drawing::Point(21, 53);
 			this->input->Margin = System::Windows::Forms::Padding(10, 3, 3, 3);
 			this->input->Name = L"input";
-			this->input->ReadOnly = true;
 			this->input->Size = System::Drawing::Size(304, 30);
 			this->input->TabIndex = 0;
 			this->input->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -476,10 +474,12 @@ namespace ModernCalc3 {
 	private: bool afterEquals = false;
 
 	// Helper
+	// Вспомогательная функция для вывода сообщения
 	private: void showMessage(String^ text) {
 		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 
+	// Проверяет значение textbox при нажатии на какую-либо кнопку
 	private: Void beforeType() {
 		if (this->secondValTime) {
 			this->input->Text = "";
@@ -489,24 +489,24 @@ namespace ModernCalc3 {
 			this->input->Text = "";
 		}
 	}
-
+	
+	// Валидирует значение textbox
 	private: bool inputCheck() {
 		if (this->input->Text == "") {
 			return false;
 		}
 		if (this->input->Text->EndsWith(",")) {
-			//showMessage("Значение не должно заканчиваться на запятую.");
 			this->input->Text = this->input->Text + "0";
 			return true;
 		}
 		if (this->input->Text->EndsWith("-")) {
-			//showMessage("Значение не должно заканчиваться на минус.");
 			return false;
 		}
 
 		return true;
 	}
 
+	// Определяет и выполняет операцию
 	private: double operatorSwitch(String^ oper, String^ strNum1, String^ strNum2) {
 		double num1 = Convert::ToDouble(strNum1);
 		double num2 = Convert::ToDouble(strNum2);
@@ -524,11 +524,14 @@ namespace ModernCalc3 {
 			return 0;
 		}
 	}
-
+	
+	// Выполнение логики входной операции
 	private: Void triggerOperator(String^ oper) {
 		if (!inputCheck()) return;
 
-		if ((this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") && this->cashOperator == "/") {
+		return;
+
+		if (Convert::ToDouble(input->Text) == 0 && this->cashOperator == "/") {
 			this->input->Text = "";
 			this->cashSecond = "";
 			showMessage("Делить на 0 нельзя.");
@@ -552,7 +555,8 @@ namespace ModernCalc3 {
 		this->secondValTime = true;
 		this->cashSecond = "";
 	}
-
+	
+	// Считает результат
 	private: Void calcResult() {
 		if (!inputCheck()) return; 
 
@@ -562,7 +566,7 @@ namespace ModernCalc3 {
 
 		if (this->cashOperator != "" && this->cashFirst != "" && this->cashSecond != "") {
 
-			if ((this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") && this->cashOperator == "/") {
+			if (Convert::ToDouble(input->Text) == 0 && this->cashOperator == "/") {
 				this->input->Text = "";
 				this->cashSecond = "";
 				showMessage("Делить на 0 нельзя.");
@@ -576,48 +580,68 @@ namespace ModernCalc3 {
 	}
 
 	// Numbers
+	// Нажатие на 7
 	private: System::Void seven_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "7";
 	}
+
+	// Нажатие на 8
 	private: System::Void eight_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "8";
 	}
+
+	// Нажатие на 9
 	private: System::Void nine_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "9";
 	}
+
+	// Нажатие на 4
 	private: System::Void four_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "4";
 	}
+
+	// Нажатие на 5
 	private: System::Void five_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "5";
 	}
+
+	// Нажатие на 6
 	private: System::Void six_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "6";
 	}
+
+	// Нажатие на 3
 	private: System::Void three_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "3";
 	}
+
+	// Нажатие на 2
 	private: System::Void two_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "2";
 	}
+
+	// Нажатие на 1
 	private: System::Void one_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "1";
 	}
+
+	// Нажатие на 1
 	private: System::Void zero_Click(System::Object^ sender, System::EventArgs^ e) {
 		beforeType();
 		this->input->Text = this->input->Text + "0";
 	}
 
 	// Support Actions
+	// Очищает последнее значение и историю
 	private: System::Void clean_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->input->Text = "";
 		this->cashFirst = "";
@@ -627,6 +651,7 @@ namespace ModernCalc3 {
 		this->afterEquals = false;
 	}
 
+	// Очищает последние значение
 	private: System::Void cleanEntry_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->input->Text = "";
 		this->cashSecond = "";
@@ -634,6 +659,7 @@ namespace ModernCalc3 {
 		this->afterEquals = false;
 	}
 
+	// Обработка нажатия на backspace
 	private: System::Void backspace_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->input->Text == "") {
 			return;
@@ -643,9 +669,10 @@ namespace ModernCalc3 {
 		this->input->Text = text->Remove(text->Length - 1, 1);
 	}
 
+	// Обработка нажатия на минус
 	private: System::Void negative_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ text = this->input->Text;
-		if (text == "0" || text == "0," || text == "0,0") {
+		if (Convert::ToDouble(text) == 0) {
 			return;
 		}
 		if (text->StartsWith("-")) {
@@ -659,18 +686,14 @@ namespace ModernCalc3 {
 			this->cashFirst = this->input->Text;
 		}
 	}
-
+	
+	// Обработка нажатия на запятую
 	private: System::Void comma_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->secondValTime) {
 			this->input->Text = "";
 			this->secondValTime = false;
 		}
 		if (!this->input->Text->Contains(",")) {
-			//if (this->secondValTime) {
-				//this->input->Text = "";
-				//this->secondValTime = false;
-			//}
-
 			if (this->input->Text == "") {
 				this->input->Text = "0";
 			}
@@ -679,46 +702,48 @@ namespace ModernCalc3 {
 	}
 
 	// Main Actions
+	// Обработка нажатия на деление
 	private: System::Void division_Click(System::Object^ sender, System::EventArgs^ e) {
 		triggerOperator("/");
 	}
+
+	// Обработка нажатия на умножение
 	private: System::Void multiplication_Click(System::Object^ sender, System::EventArgs^ e) {
 		triggerOperator("*");
 	}
+
+	// Обработка нажатия на минус
 	private: System::Void minus_Click(System::Object^ sender, System::EventArgs^ e) {
 		triggerOperator("-");
 	}
+
+	// Обработка нажатия на плюс
 	private: System::Void plus_Click(System::Object^ sender, System::EventArgs^ e) {
 		triggerOperator("+");
 	}
-	private: System::Void equal_Click(System::Object^ sender, System::EventArgs^ e) {
 
+	// Обработка нажатия на равно
+	private: System::Void equal_Click(System::Object^ sender, System::EventArgs^ e) {
 		calcResult();
 		this->secondValTime = false;
 		this->afterEquals = true;
 	}
 
 	// Other Actions
+	// Обработка нажатия на процент
 	private: System::Void percent_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!inputCheck()) return;
 		if (this->cashFirst == "") {
 			return this->input->Text = "0";
 		}
 		this->input->Text = Convert::ToString(Convert::ToDouble(this->cashFirst) * (Convert::ToDouble(this->input->Text) / 100));
-		//this->cashSecond = this->input->Text;
-
-		//this->cashInput->Text = this->cashFirst + " " + this->cashOperator + " " + this->cashSecond;
-
-		//if (this->cashFirst != "") {
-		//	this->cashFirst = this->input->Text;
-		//}
-		//this->cashInput->Text = this->cashFirst + " " + this->cashOperator + " " + this->cashSecond;
 	}
 
+	// Обработка нажатия на деления на 1
 	private: System::Void oneDivision_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!inputCheck()) return;
 
-		if (this->input->Text == "0" || this->input->Text == "0," || this->input->Text == "0,0" || this->input->Text == "0,00") {
+		if (Convert::ToDouble(this->input->Text) == 0) {
 			this->input->Text = "";
 			this->cashSecond = "";
 			showMessage("Делить на 0 нельзя.");
@@ -731,7 +756,8 @@ namespace ModernCalc3 {
 			this->cashFirst = this->input->Text;
 		}
 	}
-
+	
+	// Обработка возведения в квадрат
 	private: System::Void degree_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!inputCheck()) return;
 		this->input->Text = Convert::ToString(pow(Convert::ToDouble(this->input->Text), 2));
@@ -740,7 +766,8 @@ namespace ModernCalc3 {
 			this->cashFirst = this->input->Text;
 		}
 	}
-
+	
+	// Обработка нажатия на корень
 	private: System::Void sqrt_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!inputCheck()) return;
 

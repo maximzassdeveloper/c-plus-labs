@@ -1,3 +1,7 @@
 ﻿  MyForm.cpp
+D:\Study\2 курс\C++\Exponent\Exponent\MyForm.h(1,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+D:\Study\2 курс\C++\Exponent\Exponent\MyForm.h(288,21): warning C4101: exc: неиспользованная локальная переменная
+D:\Study\2 курс\C++\Exponent\Exponent\MyForm.h(396,22): warning C4244: инициализация: преобразование "double" в "__int64", возможна потеря данных
+D:\Study\2 курс\C++\Exponent\Exponent\MyForm.h(397,19): warning C4244: инициализация: преобразование "double" в "__int64", возможна потеря данных
   MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
   Exponent.vcxproj -> D:\Study\2 курс\C++\Exponent\Debug\Exponent.exe

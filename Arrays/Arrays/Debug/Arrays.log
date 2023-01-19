@@ -1,6 +1,6 @@
 ﻿  MyForm.cpp
-D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(817,34): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(817,26): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(863,29): warning C4101: e: неиспользованная локальная переменная
+D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(818,34): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(818,26): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+D:\Study\2 курс\C++\Arrays\Arrays\MyForm.h(864,29): warning C4101: e: неиспользованная локальная переменная
   MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
   Arrays.vcxproj -> D:\Study\2 курс\C++\Arrays\Debug\Arrays.exe

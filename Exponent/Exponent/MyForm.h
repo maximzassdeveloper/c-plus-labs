@@ -1,6 +1,8 @@
+#include <cmath>;
+
 #pragma once
 
-namespace Exponent {
+namespace cz07 {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -14,9 +16,11 @@ namespace Exponent {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
+	private: String^ accuracy;
 	public:
 		MyForm(void)
 		{
+			this->accuracy = "0,1";
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
@@ -34,40 +38,48 @@ namespace Exponent {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::GroupBox^ groupBoxX;
-	private: System::Windows::Forms::Label^ labelX;
-	private: System::Windows::Forms::TextBox^ inputX;
-	protected:
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::GroupBox^ gbX;
+	private: System::Windows::Forms::TextBox^ txtin;
 
-
+	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::GroupBox^ groupBox1;
-	private: System::Windows::Forms::Label^ title;
 	private: System::Windows::Forms::RadioButton^ radioButton6;
 	private: System::Windows::Forms::RadioButton^ radioButton5;
 	private: System::Windows::Forms::RadioButton^ radioButton4;
 	private: System::Windows::Forms::RadioButton^ radioButton3;
 	private: System::Windows::Forms::RadioButton^ radioButton2;
 	private: System::Windows::Forms::RadioButton^ radioButton1;
-	private: System::Windows::Forms::Button^ calcBtn;
-
-	private: System::Windows::Forms::Label^ labelResult;
-	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Label^ label5;
-	private: System::Windows::Forms::Button^ btnClose;
-	private: System::Windows::Forms::Label^ labelSource;
-	private: System::Windows::Forms::Label^ labelAccuracy;
-	private: System::Windows::Forms::Label^ labelAccuracyExp;
-	private: System::Windows::Forms::Label^ labelCount;
-	private: System::Windows::Forms::Label^ labelSum;
-	
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::Label^ lblIn;
+
+	private: System::Windows::Forms::Label^ lblAnswer;
+
+	private: System::Windows::Forms::Label^ lblTextAnswer;
+
+
+	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::Label^ lblSize;
+	private: System::Windows::Forms::Label^ lblAccuracy;
+
+
+	private: System::Windows::Forms::Label^ lblCorrectAnswer;
+
+	private: System::Windows::Forms::Button^ btnCount;
+
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Label^ lblError;
+	private: System::Windows::Forms::Label^ label7;
+	protected:
+
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -76,9 +88,11 @@ namespace Exponent {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->groupBoxX = (gcnew System::Windows::Forms::GroupBox());
-			this->labelX = (gcnew System::Windows::Forms::Label());
-			this->inputX = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->gbX = (gcnew System::Windows::Forms::GroupBox());
+			this->lblError = (gcnew System::Windows::Forms::Label());
+			this->txtin = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->radioButton6 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton5 = (gcnew System::Windows::Forms::RadioButton());
@@ -86,58 +100,79 @@ namespace Exponent {
 			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->title = (gcnew System::Windows::Forms::Label());
-			this->calcBtn = (gcnew System::Windows::Forms::Button());
-			this->labelResult = (gcnew System::Windows::Forms::Label());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->btnClose = (gcnew System::Windows::Forms::Button());
-			this->labelSource = (gcnew System::Windows::Forms::Label());
-			this->labelAccuracy = (gcnew System::Windows::Forms::Label());
-			this->labelAccuracyExp = (gcnew System::Windows::Forms::Label());
-			this->labelCount = (gcnew System::Windows::Forms::Label());
-			this->labelSum = (gcnew System::Windows::Forms::Label());
-			this->groupBoxX->SuspendLayout();
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->lblIn = (gcnew System::Windows::Forms::Label());
+			this->lblAnswer = (gcnew System::Windows::Forms::Label());
+			this->lblTextAnswer = (gcnew System::Windows::Forms::Label());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->lblSize = (gcnew System::Windows::Forms::Label());
+			this->lblAccuracy = (gcnew System::Windows::Forms::Label());
+			this->lblCorrectAnswer = (gcnew System::Windows::Forms::Label());
+			this->btnCount = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->gbX->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// groupBoxX
+			// label1
 			// 
-			this->groupBoxX->Controls->Add(this->labelX);
-			this->groupBoxX->Controls->Add(this->inputX);
-			this->groupBoxX->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->groupBoxX->Location = System::Drawing::Point(12, 63);
-			this->groupBoxX->Name = L"groupBoxX";
-			this->groupBoxX->Size = System::Drawing::Size(408, 80);
-			this->groupBoxX->TabIndex = 0;
-			this->groupBoxX->TabStop = false;
-			this->groupBoxX->Text = L"Ввод значения X (-13 <= X <= 20)";
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(230, 14);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(0, 25);
+			this->label1->TabIndex = 0;
 			// 
-			// labelX
+			// gbX
 			// 
-			this->labelX->AutoSize = true;
-			this->labelX->Font = (gcnew System::Drawing::Font(L"Arial", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelX->Location = System::Drawing::Point(22, 37);
-			this->labelX->Name = L"labelX";
-			this->labelX->Size = System::Drawing::Size(31, 19);
-			this->labelX->TabIndex = 1;
-			this->labelX->Text = L"x =";
+			this->gbX->Controls->Add(this->lblError);
+			this->gbX->Controls->Add(this->txtin);
+			this->gbX->Controls->Add(this->label2);
+			this->gbX->ForeColor = System::Drawing::SystemColors::Highlight;
+			this->gbX->Location = System::Drawing::Point(18, 45);
+			this->gbX->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->gbX->Name = L"gbX";
+			this->gbX->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->gbX->Size = System::Drawing::Size(502, 117);
+			this->gbX->TabIndex = 1;
+			this->gbX->TabStop = false;
+			this->gbX->Text = L"Ввод значения X (-16<=X<=25)";
 			// 
-			// inputX
+			// lblError
 			// 
-			this->inputX->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->inputX->Location = System::Drawing::Point(58, 34);
-			this->inputX->Name = L"inputX";
-			this->inputX->ShortcutsEnabled = false;
-			this->inputX->Size = System::Drawing::Size(320, 27);
-			this->inputX->TabIndex = 0;
-			this->inputX->Text = L"1";
-			this->inputX->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::inputX_KeyPress);
+			this->lblError->AutoSize = true;
+			this->lblError->ForeColor = System::Drawing::Color::Red;
+			this->lblError->Location = System::Drawing::Point(94, 39);
+			this->lblError->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblError->Name = L"lblError";
+			this->lblError->Size = System::Drawing::Size(0, 25);
+			this->lblError->TabIndex = 2;
+			// 
+			// txtin
+			// 
+			this->txtin->Location = System::Drawing::Point(90, 70);
+			this->txtin->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->txtin->Name = L"txtin";
+			this->txtin->Size = System::Drawing::Size(328, 31);
+			this->txtin->TabIndex = 1;
+			this->txtin->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->txtin->TextChanged += gcnew System::EventHandler(this, &MyForm::in_TextChanged);
+			this->txtin->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::txtin_KeyPress);
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->label2->Location = System::Drawing::Point(36, 70);
+			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(47, 25);
+			this->label2->TabIndex = 0;
+			this->label2->Text = L"x = ";
 			// 
 			// groupBox1
 			// 
@@ -147,446 +182,407 @@ namespace Exponent {
 			this->groupBox1->Controls->Add(this->radioButton3);
 			this->groupBox1->Controls->Add(this->radioButton2);
 			this->groupBox1->Controls->Add(this->radioButton1);
-			this->groupBox1->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->groupBox1->Location = System::Drawing::Point(12, 159);
+			this->groupBox1->ForeColor = System::Drawing::SystemColors::Highlight;
+			this->groupBox1->Location = System::Drawing::Point(18, 172);
+			this->groupBox1->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(408, 100);
-			this->groupBox1->TabIndex = 1;
+			this->groupBox1->Padding = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->groupBox1->Size = System::Drawing::Size(502, 127);
+			this->groupBox1->TabIndex = 2;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Выбор точности";
 			// 
 			// radioButton6
 			// 
 			this->radioButton6->AutoSize = true;
-			this->radioButton6->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton6->Location = System::Drawing::Point(280, 60);
+			this->radioButton6->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton6->Location = System::Drawing::Point(298, 77);
+			this->radioButton6->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton6->Name = L"radioButton6";
-			this->radioButton6->Size = System::Drawing::Size(98, 23);
-			this->radioButton6->TabIndex = 8;
+			this->radioButton6->Size = System::Drawing::Size(133, 29);
+			this->radioButton6->TabIndex = 5;
 			this->radioButton6->Text = L"0,000001";
 			this->radioButton6->UseVisualStyleBackColor = true;
-			this->radioButton6->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
+			this->radioButton6->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton6_CheckedChanged);
 			// 
 			// radioButton5
 			// 
 			this->radioButton5->AutoSize = true;
-			this->radioButton5->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton5->Location = System::Drawing::Point(280, 31);
+			this->radioButton5->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton5->Location = System::Drawing::Point(298, 34);
+			this->radioButton5->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton5->Name = L"radioButton5";
-			this->radioButton5->Size = System::Drawing::Size(89, 23);
-			this->radioButton5->TabIndex = 7;
+			this->radioButton5->Size = System::Drawing::Size(121, 29);
+			this->radioButton5->TabIndex = 4;
 			this->radioButton5->Text = L"0,00001";
 			this->radioButton5->UseVisualStyleBackColor = true;
-			this->radioButton5->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
+			this->radioButton5->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton5_CheckedChanged);
 			// 
 			// radioButton4
 			// 
 			this->radioButton4->AutoSize = true;
-			this->radioButton4->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton4->Location = System::Drawing::Point(150, 60);
+			this->radioButton4->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton4->Location = System::Drawing::Point(138, 77);
+			this->radioButton4->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton4->Name = L"radioButton4";
-			this->radioButton4->Size = System::Drawing::Size(80, 23);
-			this->radioButton4->TabIndex = 6;
+			this->radioButton4->Size = System::Drawing::Size(109, 29);
+			this->radioButton4->TabIndex = 3;
 			this->radioButton4->Text = L"0,0001";
-			this->radioButton4->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
+			this->radioButton4->UseVisualStyleBackColor = true;
+			this->radioButton4->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton4_CheckedChanged);
 			// 
 			// radioButton3
 			// 
 			this->radioButton3->AutoSize = true;
-			this->radioButton3->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton3->Location = System::Drawing::Point(150, 31);
+			this->radioButton3->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton3->Location = System::Drawing::Point(138, 34);
+			this->radioButton3->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton3->Name = L"radioButton3";
-			this->radioButton3->Size = System::Drawing::Size(71, 23);
-			this->radioButton3->TabIndex = 5;
+			this->radioButton3->Size = System::Drawing::Size(97, 29);
+			this->radioButton3->TabIndex = 2;
 			this->radioButton3->Text = L"0,001";
 			this->radioButton3->UseVisualStyleBackColor = true;
-			this->radioButton3->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
+			this->radioButton3->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton3_CheckedChanged);
 			// 
 			// radioButton2
 			// 
 			this->radioButton2->AutoSize = true;
-			this->radioButton2->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton2->Location = System::Drawing::Point(26, 60);
+			this->radioButton2->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton2->Location = System::Drawing::Point(9, 77);
+			this->radioButton2->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(62, 23);
-			this->radioButton2->TabIndex = 4;
+			this->radioButton2->Size = System::Drawing::Size(85, 29);
+			this->radioButton2->TabIndex = 1;
 			this->radioButton2->Text = L"0,01";
 			this->radioButton2->UseVisualStyleBackColor = true;
-			this->radioButton2->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
+			this->radioButton2->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton2_CheckedChanged);
 			// 
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
 			this->radioButton1->Checked = true;
-			this->radioButton1->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->radioButton1->Location = System::Drawing::Point(26, 31);
+			this->radioButton1->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->radioButton1->Location = System::Drawing::Point(10, 34);
+			this->radioButton1->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(53, 23);
-			this->radioButton1->TabIndex = 3;
+			this->radioButton1->Size = System::Drawing::Size(73, 29);
+			this->radioButton1->TabIndex = 0;
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"0,1";
 			this->radioButton1->UseVisualStyleBackColor = true;
-			this->radioButton1->Click += gcnew System::EventHandler(this, &MyForm::radioButton_Click);
-			// 
-			// title
-			// 
-			this->title->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->title->AutoSize = true;
-			this->title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->title->Location = System::Drawing::Point(12, 21);
-			this->title->Name = L"title";
-			this->title->Size = System::Drawing::Size(333, 20);
-			this->title->TabIndex = 2;
-			this->title->Text = L"exp(X) = 1 + x/1! + x^2/2! + x^3/3! + ...";
-			this->title->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			// 
-			// calcBtn
-			// 
-			this->calcBtn->Location = System::Drawing::Point(12, 274);
-			this->calcBtn->Name = L"calcBtn";
-			this->calcBtn->Size = System::Drawing::Size(408, 34);
-			this->calcBtn->TabIndex = 3;
-			this->calcBtn->Text = L"Расчёт exp(x)";
-			this->calcBtn->UseVisualStyleBackColor = true;
-			this->calcBtn->Click += gcnew System::EventHandler(this, &MyForm::calcBtn_Click);
-			// 
-			// labelResult
-			// 
-			this->labelResult->AutoSize = true;
-			this->labelResult->Font = (gcnew System::Drawing::Font(L"Arial", 10, System::Drawing::FontStyle::Bold));
-			this->labelResult->Location = System::Drawing::Point(12, 322);
-			this->labelResult->Name = L"labelResult";
-			this->labelResult->Size = System::Drawing::Size(180, 19);
-			this->labelResult->TabIndex = 4;
-			this->labelResult->Text = L"Результаты расчёта:";
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Arial", 8));
-			this->label1->Location = System::Drawing::Point(13, 353);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(152, 16);
-			this->label1->TabIndex = 5;
-			this->label1->Text = L"Исходное значение = ";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Arial", 8));
-			this->label2->Location = System::Drawing::Point(13, 379);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(81, 16);
-			this->label2->TabIndex = 6;
-			this->label2->Text = L"Точность =";
+			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged);
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Arial", 8));
-			this->label3->Location = System::Drawing::Point(13, 406);
+			this->label3->Location = System::Drawing::Point(14, 548);
+			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(174, 16);
-			this->label3->TabIndex = 7;
-			this->label3->Text = L"Точное значение exp(x) =";
+			this->label3->Size = System::Drawing::Size(211, 25);
+			this->label3->TabIndex = 3;
+			this->label3->Text = L"Число слагаемых = ";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Arial", 8));
-			this->label4->Location = System::Drawing::Point(13, 433);
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label4->Location = System::Drawing::Point(58, 359);
+			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(133, 16);
-			this->label4->TabIndex = 8;
-			this->label4->Text = L"Число слагаемых =";
+			this->label4->Size = System::Drawing::Size(384, 42);
+			this->label4->TabIndex = 4;
+			this->label4->Text = L"Результаты расчета:";
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Arial", 8));
-			this->label5->Location = System::Drawing::Point(13, 460);
+			this->label5->Location = System::Drawing::Point(14, 419);
+			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(143, 16);
-			this->label5->TabIndex = 9;
-			this->label5->Text = L"Сумма ряда exp(x) =";
+			this->label5->Size = System::Drawing::Size(233, 25);
+			this->label5->TabIndex = 5;
+			this->label5->Text = L"Исходное значение = ";
 			// 
-			// btnClose
+			// label6
 			// 
-			this->btnClose->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->btnClose->Location = System::Drawing::Point(332, 488);
-			this->btnClose->Name = L"btnClose";
-			this->btnClose->Size = System::Drawing::Size(88, 31);
-			this->btnClose->TabIndex = 10;
-			this->btnClose->Text = L"Закрыть";
-			this->btnClose->UseVisualStyleBackColor = true;
-			this->btnClose->Click += gcnew System::EventHandler(this, &MyForm::btnClose_Click);
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(14, 505);
+			this->label6->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(268, 25);
+			this->label6->TabIndex = 6;
+			this->label6->Text = L"Точное значение exp(x) =";
 			// 
-			// labelSource
+			// lblIn
 			// 
-			this->labelSource->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelSource->Location = System::Drawing::Point(246, 346);
-			this->labelSource->Name = L"labelSource";
-			this->labelSource->Size = System::Drawing::Size(174, 23);
-			this->labelSource->TabIndex = 11;
-			this->labelSource->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->lblIn->AutoSize = true;
+			this->lblIn->Location = System::Drawing::Point(291, 419);
+			this->lblIn->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblIn->Name = L"lblIn";
+			this->lblIn->Size = System::Drawing::Size(0, 25);
+			this->lblIn->TabIndex = 7;
 			// 
-			// labelAccuracy
+			// lblAnswer
 			// 
-			this->labelAccuracy->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelAccuracy->Location = System::Drawing::Point(246, 376);
-			this->labelAccuracy->Name = L"labelAccuracy";
-			this->labelAccuracy->Size = System::Drawing::Size(174, 23);
-			this->labelAccuracy->TabIndex = 12;
-			this->labelAccuracy->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->lblAnswer->AutoSize = true;
+			this->lblAnswer->Location = System::Drawing::Point(291, 594);
+			this->lblAnswer->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblAnswer->Name = L"lblAnswer";
+			this->lblAnswer->Size = System::Drawing::Size(0, 25);
+			this->lblAnswer->TabIndex = 8;
 			// 
-			// labelAccuracyExp
+			// lblTextAnswer
 			// 
-			this->labelAccuracyExp->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelAccuracyExp->Location = System::Drawing::Point(246, 403);
-			this->labelAccuracyExp->Name = L"labelAccuracyExp";
-			this->labelAccuracyExp->Size = System::Drawing::Size(174, 23);
-			this->labelAccuracyExp->TabIndex = 13;
-			this->labelAccuracyExp->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->lblTextAnswer->AutoSize = true;
+			this->lblTextAnswer->Location = System::Drawing::Point(14, 594);
+			this->lblTextAnswer->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblTextAnswer->Name = L"lblTextAnswer";
+			this->lblTextAnswer->Size = System::Drawing::Size(223, 25);
+			this->lblTextAnswer->TabIndex = 9;
+			this->lblTextAnswer->Text = L"Сумма ряда exp(x) = ";
 			// 
-			// labelCount
+			// label10
 			// 
-			this->labelCount->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelCount->Location = System::Drawing::Point(246, 426);
-			this->labelCount->Name = L"labelCount";
-			this->labelCount->Size = System::Drawing::Size(174, 23);
-			this->labelCount->TabIndex = 14;
-			this->labelCount->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(14, 464);
+			this->label10->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(128, 25);
+			this->label10->TabIndex = 10;
+			this->label10->Text = L"Точность = ";
 			// 
-			// labelSum
+			// lblSize
 			// 
-			this->labelSum->Font = (gcnew System::Drawing::Font(L"Arial", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->labelSum->Location = System::Drawing::Point(246, 453);
-			this->labelSum->Name = L"labelSum";
-			this->labelSum->Size = System::Drawing::Size(174, 23);
-			this->labelSum->TabIndex = 15;
-			this->labelSum->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->lblSize->AutoSize = true;
+			this->lblSize->Location = System::Drawing::Point(291, 548);
+			this->lblSize->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblSize->Name = L"lblSize";
+			this->lblSize->Size = System::Drawing::Size(0, 25);
+			this->lblSize->TabIndex = 11;
+			// 
+			// lblAccuracy
+			// 
+			this->lblAccuracy->AutoSize = true;
+			this->lblAccuracy->Location = System::Drawing::Point(291, 464);
+			this->lblAccuracy->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblAccuracy->Name = L"lblAccuracy";
+			this->lblAccuracy->Size = System::Drawing::Size(0, 25);
+			this->lblAccuracy->TabIndex = 12;
+			// 
+			// lblCorrectAnswer
+			// 
+			this->lblCorrectAnswer->AutoSize = true;
+			this->lblCorrectAnswer->Location = System::Drawing::Point(291, 505);
+			this->lblCorrectAnswer->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->lblCorrectAnswer->Name = L"lblCorrectAnswer";
+			this->lblCorrectAnswer->Size = System::Drawing::Size(0, 25);
+			this->lblCorrectAnswer->TabIndex = 13;
+			// 
+			// btnCount
+			// 
+			this->btnCount->Enabled = false;
+			this->btnCount->Location = System::Drawing::Point(18, 308);
+			this->btnCount->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->btnCount->Name = L"btnCount";
+			this->btnCount->Size = System::Drawing::Size(502, 47);
+			this->btnCount->TabIndex = 14;
+			this->btnCount->Text = L"Расчет exp(x)";
+			this->btnCount->UseVisualStyleBackColor = true;
+			this->btnCount->Click += gcnew System::EventHandler(this, &MyForm::btnCount_Click);
+			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(372, 650);
+			this->button2->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(153, 52);
+			this->button2->TabIndex = 15;
+			this->button2->Text = L"Закрыть";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(80, 14);
+			this->label7->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(371, 25);
+			this->label7->TabIndex = 16;
+			this->label7->Text = L"exp(x) = 1 + x/1! + x^2/2! + x^3/3! + ...";
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::Linen;
-			this->ClientSize = System::Drawing::Size(432, 531);
-			this->Controls->Add(this->labelSum);
-			this->Controls->Add(this->labelCount);
-			this->Controls->Add(this->labelAccuracyExp);
-			this->Controls->Add(this->labelAccuracy);
-			this->Controls->Add(this->labelSource);
-			this->Controls->Add(this->btnClose);
+			this->ClientSize = System::Drawing::Size(538, 716);
+			this->Controls->Add(this->label7);
+			this->Controls->Add(this->button2);
+			this->Controls->Add(this->btnCount);
+			this->Controls->Add(this->lblCorrectAnswer);
+			this->Controls->Add(this->lblAccuracy);
+			this->Controls->Add(this->lblSize);
+			this->Controls->Add(this->label10);
+			this->Controls->Add(this->lblTextAnswer);
+			this->Controls->Add(this->lblAnswer);
+			this->Controls->Add(this->lblIn);
+			this->Controls->Add(this->label6);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->label1);
-			this->Controls->Add(this->labelResult);
-			this->Controls->Add(this->calcBtn);
-			this->Controls->Add(this->title);
 			this->Controls->Add(this->groupBox1);
-			this->Controls->Add(this->groupBoxX);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->MaximizeBox = false;
+			this->Controls->Add(this->gbX);
+			this->Controls->Add(this->label1);
+			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"MyForm";
-			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Расчёт exp(x)";
-			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			this->groupBoxX->ResumeLayout(false);
-			this->groupBoxX->PerformLayout();
+			this->Text = L"Расчет exp(x)";
+			this->gbX->ResumeLayout(false);
+			this->gbX->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
-#pragma endregion
-
-	private: double accuracy = 0.01;
-	private: String^ strAccuracy = "0.1";
-	private: int count = 0;
-	private: int max = 20;
-	private: int min = -13;
-	
-
-	// Helper
-	private: Void showMessage(String^ text) {
-		MessageBox::Show(text, "Уведомление", MessageBoxButtons::OK, MessageBoxIcon::Information);
-	}
-
-	private: double checkInputX() {
-		String^ text = this->inputX->Text;
-		if (text == "-") {
-			this->inputX->Text = "1";
-		}
-		if (text->EndsWith(",")) {
-			this->inputX->Text = text + "0";
-		}
-
-		double x = Convert::ToDouble(this->inputX->Text);
-		if (x < min) {
-			x = min;
-			this->inputX->Text = Convert::ToString(min);
-			showMessage("Значение \"x\" было изменено на " + Convert::ToString(min));
-		}
-		else if (x > max) {
-			x = max;
-			this->inputX->Text = Convert::ToString(max);
-			showMessage("Значение \"x\" было изменено на " + Convert::ToString(max));
-		}
-
-		return x;
-	}
-
-	private: Void selectAccuracy() {
-		String^ strAccuracy = "";
-		if (radioButton1->Checked) { strAccuracy = radioButton1->Text; }
-		if (radioButton2->Checked) { strAccuracy = radioButton2->Text; }
-		if (radioButton3->Checked) { strAccuracy = radioButton3->Text; }
-		if (radioButton4->Checked) { strAccuracy = radioButton4->Text; }
-		if (radioButton5->Checked) { strAccuracy = radioButton5->Text; }
-		if (radioButton6->Checked) { strAccuracy = radioButton6->Text; }
-
-		this->accuracy = Convert::ToDouble(strAccuracy) / 10;
-		this->strAccuracy = strAccuracy;
-	}
-
-	private: double factorial(double num) {
-		if (num == 1 || num == 2) {
-			return num;
-		}
-		return num * factorial(num-1);
-	}
-
-	private: double calcSumRow(double x, double eps) {
-		double res = 1;
-		double added = 1;
-		int i = 0;
-		while (Math::Abs(added) > eps) {
-			i += 1;
-			added = Math::Pow(x, i) / factorial(i);
-			res += added;
-		}
-
-		this->count = i;
-		return res;
-	}
-
-	private: Void clearData() {
-		this->labelSource->Text = "";
-		this->labelAccuracy->Text = "";
-		this->labelAccuracyExp->Text = "";
-		this->labelCount->Text = "";
-		this->labelSum->Text = "";
-	}
-
-	// Main
-	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->Close();
-	}
-
-	private: System::Void radioButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		selectAccuracy();
-		clearData();
-	}
-	
-	private: System::Void inputX_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
-		clearData();
-
-		// Disable typing before "-"
-		if (inputX->SelectionStart == 0 && inputX->Text->StartsWith("-")) {
-			e->Handled = true;
-		}
-		// Access ","
-		else if (e->KeyChar == ',') {
-			if (inputX->Text->Contains(",")) {
-				e->Handled = true;
+	private: System::Void in_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->lblSize->Text = "";
+		this->lblAnswer->Text = "";
+		this->lblCorrectAnswer->Text = "";
+		this->lblAccuracy->Text = "";
+		this->lblIn->Text = "";
+		try {
+			double test;
+			test = Convert::ToDouble(this->txtin->Text);
+			if (test > 25 || test < -16) {
+				this->lblError->Text = "Число не входит в диапазон!";
+				this->btnCount->Enabled = false;
+			}
+			else {
+				this->btnCount->Enabled = true;
+				this->lblError->Text = "";
 			}
 		}
-		// Access "-"
-		else if (e->KeyChar == '-' && !inputX->Text->Contains("-")) {
-			e->Handled = true;
-			inputX->Text = "-" + inputX->Text;
-			inputX->SelectionStart = inputX->Text->Length;
-		}
-		// Access digits and backspace
-		else if (!Char::IsDigit(e->KeyChar) && e->KeyChar != (Char)Keys::Back) {
-			e->Handled = true;
+		catch (Exception^ exc) {
+			this->btnCount->Enabled = false;
 		}
 	}
-
-	private: void findAccuracy(int index) {
-		radioButton1->Checked = false;
-		radioButton2->Checked = false;
-		radioButton3->Checked = false;
-		radioButton4->Checked = false;
-		radioButton5->Checked = false;
-		radioButton6->Checked = false;
-		switch (index) {
-		case 1: 
-			radioButton1->Checked = true;
-		case 2:
-			radioButton2->Checked = true;
-		case 3:
-			radioButton3->Checked = true;
-		case 4:
-			radioButton4->Checked = true;
-		case 5:
-			radioButton5->Checked = true;
-		case 6:
-			radioButton6->Checked = true;
-		default:
-			break;
-		}
-	}
-
-	private: void calc() {
-		double x = checkInputX();
-		double accuracyExp = Math::Exp(x);
-		accuracyExp = Math::Round(accuracyExp / accuracy) * accuracy;
-		double sumRow = calcSumRow(x, this->accuracy);
-		sumRow = Math::Round(sumRow / accuracy) * accuracy;
-
-		this->labelSource->Text = Convert::ToString(x);
-		this->labelAccuracy->Text = strAccuracy;
-		this->labelAccuracyExp->Text = Convert::ToString(accuracyExp);
-		this->labelCount->Text = Convert::ToString(this->count);
-		this->labelSum->Text = Convert::ToString(sumRow);
-	}
-
-	private: System::Void calcBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (this->inputX->Text == "") {
-			showMessage("Значение \"x\" не должно быть пустым");
-			return;
-		}
-
-		calc();
-
-		if (labelAccuracyExp->Text == "0") {
-			for (int i = 2; i < 6; i++) {
-				findAccuracy(i);
-				selectAccuracy();
-
-				calc();
-				if (labelAccuracyExp->Text != "0") {
-					break;
+	private: System::Void txtin_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+		if (!System::Char::IsControl(e->KeyChar)) {
+			if (e->KeyChar == '-') {
+				if (this->txtin->SelectionStart != 0 || this->txtin->Text->IndexOf("-") != -1)
+					e->Handled = true;
+			}
+			else if (e->KeyChar == ',' && this->txtin->Text->IndexOf(",") == -1) {
+				if (this->txtin->SelectionStart == 0) {
+					this->txtin->Text = "0," + this->txtin->Text;
+					e->Handled = true;
+					this->txtin->SelectionStart = 2;
+				}
+				else if (this->txtin->SelectionStart == 1 && this->txtin->Text[0] == '-') {
+					this->txtin->Text = "-0," + this->txtin->Text->Substring(1, this->txtin->Text->Length - 1);
+					e->Handled = true;
+					this->txtin->SelectionStart = 3;
 				}
 			}
+			else if (!System::Char::IsDigit(e->KeyChar))
+				e->Handled = true;
 		}
+	}
+	private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,1";
+	}
+	private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,01";
+	}
+
+	private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,001";
+	}
+	private: System::Void radioButton4_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,0001";
+	}
+	private: System::Void radioButton5_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,00001";
+	}
+	private: System::Void radioButton6_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		this->accuracy = "0,000001";
+	}
+	private: System::Double myExp1() {
+		int size = 1;
+		double answer = 1;
+		double input = Convert::ToDouble(this->txtin->Text);
+		double current = (pow(input, size) / Fact(size));
+		answer += current;
+		while (abs(current) > pow(10, -7)) {
+			size += 1;
+			current = (pow(input, size) / Fact(size));
+			answer += current;
+		}
+		this->lblSize->Text = Convert::ToString(size);
+		return answer;
+	}
+	private: System::Double myExp2(double input) {
+		int size = 1;
+		double current = 1;
+		double answer = 0;
+		answer += current;
+		while (abs(current) > pow(10, -this->accuracy->Length - 1)) {
+			current = current * input / size;
+			answer += current;
+			size++;
+		}
+		this->lblSize->Text = Convert::ToString(size);
+		return answer;
+	}
+	private: System::Double Fact(int value) {
+		if (value == 1) return 1;
+		else return value * Fact(value - 1);
+	}
+	private: System::Void btnCount_Click(System::Object^ sender, System::EventArgs^ e) {
+		int doubAccuracy = this->accuracy->Length - 1;
+		double answer;
+		double input = Convert::ToDouble(this->txtin->Text);
+		int c = doubAccuracy;
+		double ans = exp(input);
+		while (Convert::ToDouble(ans.ToString("f" + doubAccuracy.ToString())) == 0) {
+			doubAccuracy++;
+		}
+		switch (doubAccuracy) {
+		case 2:
+			this->radioButton1->Checked = true;
+			break;
+		case 3:
+			this->radioButton2->Checked = true;
+			break;
+		case 4:
+			this->radioButton3->Checked = true;
+			break;
+		case 5:
+			this->radioButton4->Checked = true;
+			break;
+		case 6:
+			this->radioButton5->Checked = true;
+			break;
+		case 7:
+			this->radioButton6->Checked = true;
+			break;
+		}
+		if (c != doubAccuracy)
+			MessageBox::Show("Точность была изменена!");
+		answer = myExp2(input);
+		Int64 answermantis = floor((answer - floor(answer)) * pow(10, doubAccuracy));
+		Int64 ansmantis = floor((ans - floor(ans)) * pow(10, doubAccuracy));
+		this->lblAnswer->Text = (input > 0) ? (floor(answer)).ToString() + "," + answermantis.ToString() : answer.ToString("f" + doubAccuracy.ToString());;
+		this->lblCorrectAnswer->Text = ans.ToString("f" + doubAccuracy.ToString());//(input > 0) ? (floor(ans)).ToString() + "," + ansmantis.ToString() : ans.ToString("f" + doubAccuracy.ToString());
+		this->lblAccuracy->Text = this->accuracy;
+		this->lblIn->Text = Convert::ToString(input);
 
 	}
-private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Close();
+	}
+	};
 }
-};
-}
+
+

@@ -6,7 +6,7 @@ using namespace System::Windows::Forms;
 void Main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Exponent::MyForm form;
+	cz07::MyForm form;
 	Application::Run(% form);
 }
 
